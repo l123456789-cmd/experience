@@ -49,3 +49,9 @@ Coordinate.VY
  - \_order_ -- 用于 Python 2/3 代码以确保成员顺序一致（类属性，在类创建期间会被移除）
 
  - \_generate\_next\_value\_ -- Functional API 和 auto 用它为枚举成员获取适当的值；可被重写
+
+### dict 的使用
+连续使用get()方法，要确保中间的get方法都能取到值，保证后续的get方法操作对象为dict，**否则可能出现(AttributeError: 'NoneType' object has no attribute 'get')**
+``` python
+dict.get("key1", {}).get("key2", {}).get("key3")
+```
