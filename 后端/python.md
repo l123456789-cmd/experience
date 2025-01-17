@@ -27,6 +27,8 @@ Coordinate.PY
 
 print(Coordinate(3))
 Coordinate.VY
+
+obj = bytes.__new__(cls, value)    # 带有value时，obj=value; 不传value时,obj=""
 ```
 ```
 > 警告 不要 调用 super().__new__()，因为只能找到仅用于查找的 __new__；请改为直接使用该数据类型。
