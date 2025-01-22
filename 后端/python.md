@@ -57,3 +57,10 @@ obj = bytes.__new__(cls, value)    # 带有value时，obj=value; 不传value时,
 ``` python
 dict.get("key1", {}).get("key2", {}).get("key3")
 ```
+
+
+### try-catch
+抛出异常时，可以用raise Exception()提示具体信息
+```
+raise Exception("提示信息")
+```
