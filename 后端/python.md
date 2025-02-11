@@ -64,3 +64,39 @@ dict.get("key1", {}).get("key2", {}).get("key3")
 ```
 raise Exception("提示信息")
 ```
+
+### fdopen 和普通 open
+1.理解 os.fdopen 的作用：
+
+os.fdopen 是Python中用于打开文件的一个函数，但它底层直接调用了操作系统提供的文件描述符（FD）接口。这使得操作更加低层次，提供了比高阶的open()函数更多的控制和更低的层面上的操作。
+
+2.比较 fdopen 和普通 open 的区别：
+
+通常在Python中使用with open(filename, mode) as f:来打开文件，并使用File Object进行操作。
+使用低级方法（如fdopen）的好处在于：可能更高效地控制底层的操作，尤其是对于大量数据或高性能场景中的I/O操作。因为File Object本身可能涉及一些额外的管理开销。
+
+3.评估性能优化的潜在：
+
+在某些高性能的应用中，低层操作可以更快地完成文件读写操作。fdopen可以直接控制操作系统对文件的操作流程，避免高一层的中间态（如File Object）带来的延迟或开销。
+
+4.考虑并发处理的可能性：
+
+当需要同时打开多个文件或频繁操作文件时，使用低级操作符可以提高系统的吞吐量和响应速度。这在多任务环境或高并发情况下特别有用。
+
+5.避免资源竞争的问题：
+
+在某些操作系统中，File Object可能有与文件描述符的冲突或者导致资源竞争问题。直接使用低级方法可以在一定程度上规避这些问题，确保操作的一致性和稳定性。
+
+**综上所述，os.fdopen 的使用在这种情况下的主要优点是提升操作效率、避免潜在的资源竞储以及在高负载或复杂IO操作中保持系统的响应能力。
+
+### configparser --- 配置文件解析器
+此模块提供了它实现一种基本配置语言 ConfigParser 类，这种语言所提供的结构与 Microsoft Windows INI 文件的类似。 你可以使用这种语言来编写能够由最终用户来自定义的 Python 程序。
+```
+config = configparser.ConfigParser()
+config.sections()
+---[]
+config.read('example.ini')
+---['example.ini']
+config.sections()
+---['forge.example', 'topsecret.server.example']
+```
