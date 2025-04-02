@@ -188,3 +188,17 @@ sub_count = reduce(
     0  # 初始值（关键！）
 )
 ```
+
+### 装饰器
+```
+def my_decorator(func):
+    def wrapper():
+        print("装饰器：函数调用前")  # 添加被装饰函数执行前的操作
+        func()                      # 调用原始函数
+        print("装饰器：函数调用后")  # 添加被装饰函数执行后的操作
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+```
