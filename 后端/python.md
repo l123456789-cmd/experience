@@ -202,3 +202,6 @@ def my_decorator(func):
 def say_hello():
     print("Hello!")
 ```
+
+可以使用 next(iter(...)) 来更高效地获取字典的第一个键，避免将所有键转换为列表。
+这样可以避免生成整个键列表，提高效率。
