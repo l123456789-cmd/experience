@@ -1,0 +1,43 @@
+使用数据库代理Proxy连接
+
+1. 延迟数据库初始化，灵活切库
+你在业务代码、项目初始化等场景，往往在配置加载完以后才知道用哪个数据库（比如是 MySQL 还是 SQLite，或者不同 MySQL 实例）。
+Proxy 让你可以：
+
+不必在模型定义时就指定 MySQL
+程序启动/配置确定后，统一用 .initialize() 绑定到 MySQL 数据库对象
+日后更换 MySQL 实例、更换引擎，代码主干都不用动
+场景举例
+from peewee import Proxy, Model, CharField, MySQLDatabase
+db_proxy = Proxy()
+class User(Model):
+    name = CharField()
+    class Meta:
+        database = db_proxy
+# 配置文件/环境变量里拿到 MySQL 连接参数
+db = MySQLDatabase(host='xxx', user='xxx', password='xxx', database='mydb')
+db_proxy.initialize(db)
+python
+2. 对接第三方包/插件开发更方便
+写“能插拔到任何数据库”的扩展/插件时，不提前绑定 MySQL，使用 Proxy，别人项目里怎么配置 MySQL 你不用管，直接用别人的数据库就行，让你的包适合在各种场景/云产品/本地方案使用。
+
+3. 便于单元测试和多环境部署
+单元测试时，可以用 Proxy 动态绑定内存数据库或测试 MySQL 实例
+线上、预发、开发环境随意切换参数，无脑兼容
+4. 全项目代码复用性大大增强
+所有模型只写一次 Meta: database = db_proxy
+无论你的数据库是本地、远程、云服务、MySQL5/MySQL8、RDS，都能统一管理
+后续业务迁移MySQL实例、升级驱动都无需大范围重构
+5. 集中管理数据库连接，异常处理更方便
+用 Proxy，可以在一处统一管理数据库连接池、重连逻辑，监控所有模型的数据库健康、日志、更好做分布式部署。
+
+6. 适合异步应用或多数据库/多租户场景（需要再封装，便于切库）
+如果做多数据库SAAS、分库分表等架构，用 Proxy 更容易做多个 MySQL 动态切换（每个租户建专属 Proxy/MySQLDatabase 实例，动态切换）。
+
+总结
+使用 Proxy 连接 MySQL，好处主要是：
+
+让数据库的绑定变得灵活可控，
+业务代码与具体 MySQL 实现解耦，
+支持多环境部署、插件开发、测试、集群等现代开发需求。
+简单说，就是更灵活、更易维护、更“专业”！
