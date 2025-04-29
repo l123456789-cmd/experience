@@ -207,3 +207,61 @@ def say_hello():
 这样可以避免生成整个键列表，提高效率。
 
 缓冲机制：Python的文件写入操作通常会将数据缓存到内存中，只有在缓存满或显式调用flush()时才会将数据写入磁盘。在多线程环境下，缓存机制可能会导致数据没有及时写入文件。
+
+### for-else
+for-else是Python独有且常被初学者忽视的一个结构，非常实用。下面给你详细讲解：
+
+1. 基本结构
+```
+for item in iterable:
+    # 处理逻辑
+    if 条件:
+        break  # 满足条件则跳出整个for循环
+else:
+    # 如果循环正常结束（即没有遇到break），才会执行这里的代码
+python
+```
+else语句会在整个for循环没有因为break提前退出时执行。
+如果for循环碰到了break，else语句就不会执行。
+2. 示例讲解
+(1) 查找列表元素
+```
+lst = [1, 3, 5, 7]
+for num in lst:
+    if num % 2 == 0:
+        print("有偶数", num)
+        break
+else:
+    print("列表中没有偶数")
+python
+```
+如果找到偶数，break跳出循环，else不执行。
+如果列表里没有偶数，for循环结束后else才会被执行，输出“列表中没有偶数”。
+(2) 用于数据过滤
+```
+origin = [{"id":1},{"id":None}]
+for data in origin:
+    if not data["id"]:
+        break  # 有不满足条件的直接跳出循环
+else:
+    print("所有数据都符合要求")
+python
+```
+只要有break，else就不会执行。
+只有所有数据正常检查完（没break），才会执行else语句，做收尾逻辑。
+3. 适用场景
+查找： 循环查找某个条件，没找到时额外做点事。
+校验： 一组数据都通过时做某个操作，否则在break时提前处理。
+4. 常见误解
+else不是和if配对，而是和for/while配对！
+while循环也有相同用法。
+5. 格式概览
+```
+for item in iterable:
+    if ...:
+        break
+else:
+    # 只有没break，这里才执行
+python
+```
+总结一句： for-else中的else只在循环正常结束（没break）时执行，是一种很优雅解决“查找-未找到/全通过-做什么”问题的语法糖。
